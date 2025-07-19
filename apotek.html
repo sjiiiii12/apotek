@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Apotek Keluarga</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background-color: white;
+        min-height: 100vh;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .nav {
+        background-color: #34495e;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .nav li {
+        margin: 0.5rem;
+      }
+
+      .nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        display: block;
+        font-weight: 500;
+      }
+
+      .nav a:hover,
+      .nav a.active {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .content {
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: calc(100vh - 200px);
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding: 2rem 0;
+      }
+
+      .page-header h2 {
+        color: #2c3e50;
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+      }
+
+      .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        border: 1px solid #e9ecef;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      .stat-card .icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-card h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+
+      .stat-card .number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #3498db;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 0.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+      }
+
+      .btn-danger:hover {
+        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #27ae60, #229954);
+        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+      }
+
+      .btn-success:hover {
+        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+      }
+
+      .btn-warning {
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+      }
+
+      .btn-warning:hover {
+        box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+      }
+
+      .table-container {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+
+      table th,
+      table td {
+        border: 1px solid #e9ecef;
+        padding: 1rem;
+        text-align: left;
+      }
+
+      table th {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      table tr:hover {
+        background-color: #e3f2fd;
+      }
+
+      .alert {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        border-color: #27ae60;
+        color: #155724;
+      }
+
+      .alert-error {
+        background-color: #f8d7da;
+        border-color: #e74c3c;
+        color: #721c24;
+      }
+
+      .alert-info {
+        background-color: #d1ecf1;
+        border-color: #3498db;
+        color: #0c5460;
+      }
+
+      .search-container {
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background: white;
+        margin: 5% auto;
+        padding: 2rem;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 600px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e9ecef;
+      }
+
+      .close {
+        font-size: 2rem;
+        cursor: pointer;
+        color: #aaa;
+        font-weight: bold;
+      }
+
+      .close:hover {
+        color: #000;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 2rem;
+        color: #7f8c8d;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #7f8c8d;
+      }
+
+      .empty-state img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      @media (max-width: 768px) {
+        .nav ul {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .nav li {
+          margin: 0.25rem 0;
+        }
+
+        .dashboard-stats {
+          grid-template-columns: 1fr;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .search-container {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+
+      @media print {
+        body * {
+          visibility: hidden !important;
+        }
+        #transaksi-page,
+        #transaksi-page * {
+          visibility: visible !important;
+        }
+        #transaksi-page {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100vw;
+          background: white;
+          z-index: 9999;
+        }
+        .nav,
+        .header,
+        .dashboard-stats,
+        .page-header,
+        .search-container,
+        .modal,
+        .btn,
+        .action-buttons {
+          display: none !important;
+        }
+        .table-container {
+          box-shadow: none !important;
+          padding: 0 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🏥 Sistem Apotek Keluarga</h1>
+        <p>Sistem Manajemen Apotek Modern & Terpadu</p>
+      </div>
+
+      <div class="nav">
+        <ul>
+          <li><a href="#dashboard" class="nav-link active">📊 Dashboard</a></li>
+          <li><a href="#obat" class="nav-link">💊 Data Obat</a></li>
+          <li><a href="#karyawan" class="nav-link">👥 Data Karyawan</a></li>
+          <li><a href="#pelanggan" class="nav-link">🧑‍🤝‍🧑 Data Pelanggan</a></li>
+          <li><a href="#supplier" class="nav-link">🏢 Data Supplier</a></li>
+          <li><a href="#transaksi" class="nav-link">💳 Transaksi</a></li>
+          <li><a href="#laporan" class="nav-link">📈 Laporan</a></li>
+        </ul>
+      </div>
+
+      <div class="content">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page">
+          <div class="page-header">
+            <h2>Dashboard</h2>
+            <p>Selamat datang di Sistem Apotek Keluarga</p>
+          </div>
+
+          <div class="dashboard-stats">
+            <div class="stat-card" id="stat-obat">
+              <div class="icon">💊</div>
+              <h3>Total Obat</h3>
+              <div class="number" id="total-obat">125</div>
+              <p>Jenis obat tersedia</p>
+            </div>
+            <div class="stat-card" id="stat-karyawan">
+              <div class="icon">👥</div>
+              <h3>Total Karyawan</h3>
+              <div class="number" id="total-karyawan">12</div>
+              <p>Karyawan aktif</p>
+            </div>
+            <div class="stat-card" id="stat-pelanggan">
+              <div class="icon">🧑‍🤝‍🧑</div>
+              <h3>Total Pelanggan</h3>
+              <div class="number" id="total-pelanggan">486</div>
+              <p>Pelanggan terdaftar</p>
+            </div>
+            <div class="stat-card" id="stat-supplier">
+              <div class="icon">🏢</div>
+              <h3>Total Supplier</h3>
+              <div class="number" id="total-supplier">24</div>
+              <p>Supplier aktif</p>
+            </div>
+            <div class="stat-card" id="stat-transaksi">
+              <div class="icon">💳</div>
+              <h3>Transaksi Hari Ini</h3>
+              <div class="number" id="transaksi-hari-ini">47</div>
+              <p>Transaksi berhasil</p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <h3>Transaksi Terbaru</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>No. Transaksi</th>
+                  <th>Pelanggan</th>
+                  <th>Obat</th>
+                  <th>Tanggal</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recent-transactions">
+                <tr>
+                  <td>TRX001</td>
+                  <td>John Doe</td>
+                  <td>Paracetamol</td>
+                  <td>2024-07-18</td>
+                  <td>Rp 25.000</td>
+                  <td><span class="btn btn-success">Selesai</span></td>
+                </tr>
+                <tr>
+                  <td>TRX002</td>
+                  <td>Jane Smith</td>
+                  <td>Amoxicillin</td>
+                  <td>2024-07-18</td>
+                  <td>Rp 45.000</td>
+                  <td><span class="btn btn-success">Selesai</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Data Obat Page -->
+        <div id="obat-page" class="page hidden">
+          <div class="page-header">
+            <h2>Data Obat</h2>
+            <p>Kelola data obat dan stok apotek</p>
+          </div>
+
+          <div class="search-container">
+            <input
+              type="text"
+              id="search-obat"
+              class="search-input"
+              placeholder="Cari obat..."
+            />
+            <button class="btn btn-success" onclick="showObatForm()">
+              + Tambah Obat
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Obat</th>
+                  <th>Jenis</th>
+                  <th>Harga Beli</th>
+                  <th>Harga Jual</th>
+                  <th>Stok</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="obat-table">
+                <tr>
+                  <td>1</td>
+                  <td>Paracetamol</td>
+                  <td>Tablet</td>
+                  <td>Rp 15.000</td>
+                  <td>Rp 25.000</td>
+                  <td>150</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editObat(1)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteObat(1)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Amoxicillin</td>
+                  <td>Kapsul</td>
+                  <td>Rp 30.000</td>
+                  <td>Rp 45.000</td>
+                  <td>75</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editObat(2)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteObat(2)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Data Karyawan Page -->
+        <div id="karyawan-page" class="page hidden">
+          <div class="page-header">
+            <h2>Data Karyawan</h2>
+            <p>Kelola data karyawan apotek</p>
+          </div>
+
+          <div class="search-container">
+            <input
+              type="text"
+              id="search-karyawan"
+              class="search-input"
+              placeholder="Cari karyawan..."
+            />
+            <button class="btn btn-success" onclick="showKaryawanForm()">
+              + Tambah Karyawan
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>Alamat</th>
+                  <th>No. Telepon</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="karyawan-table">
+                <tr>
+                  <td>1</td>
+                  <td>Ahmad Suryadi</td>
+                  <td>Jl. Merdeka No. 123</td>
+                  <td>0812-3456-7890</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editKaryawan(1)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteKaryawan(1)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Siti Nurhaliza</td>
+                  <td>Jl. Sudirman No. 456</td>
+                  <td>0813-7890-1234</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editKaryawan(2)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteKaryawan(2)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Data Pelanggan Page -->
+        <div id="pelanggan-page" class="page hidden">
+          <div class="page-header">
+            <h2>Data Pelanggan</h2>
+            <p>Kelola data pelanggan apotek</p>
+          </div>
+
+          <div class="search-container">
+            <input
+              type="text"
+              id="search-pelanggan"
+              class="search-input"
+              placeholder="Cari pelanggan..."
+            />
+            <button class="btn btn-success" onclick="showPelangganForm()">
+              + Tambah Pelanggan
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>Alamat</th>
+                  <th>Jenis Kelamin</th>
+                  <th>No. Telepon</th>
+                  <th>Pekerjaan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="pelanggan-table">
+                <tr>
+                  <td>1</td>
+                  <td>John Doe</td>
+                  <td>Jl. Kebon Jeruk No. 789</td>
+                  <td>Laki-laki</td>
+                  <td>0814-5678-9012</td>
+                  <td>Dokter</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editPelanggan(1)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deletePelanggan(1)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Jane Smith</td>
+                  <td>Jl. Thamrin No. 321</td>
+                  <td>Perempuan</td>
+                  <td>0815-9012-3456</td>
+                  <td>Guru</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editPelanggan(2)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deletePelanggan(2)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Data Supplier Page -->
+        <div id="supplier-page" class="page hidden">
+          <div class="page-header">
+            <h2>Data Supplier</h2>
+            <p>Kelola data supplier obat</p>
+          </div>
+
+          <div class="search-container">
+            <input
+              type="text"
+              id="search-supplier"
+              class="search-input"
+              placeholder="Cari supplier..."
+            />
+            <button class="btn btn-success" onclick="showSupplierForm()">
+              + Tambah Supplier
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Supplier</th>
+                  <th>Alamat</th>
+                  <th>No. Telepon</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="supplier-table">
+                <tr>
+                  <td>1</td>
+                  <td>PT. Kimia Farma</td>
+                  <td>Jl. Gatot Subroto No. 100</td>
+                  <td>021-5555-0001</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editSupplier(1)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteSupplier(1)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>PT. Kalbe Farma</td>
+                  <td>Jl. Letjen Suprapto No. 200</td>
+                  <td>021-5555-0002</td>
+                  <td class="action-buttons">
+                    <button class="btn btn-warning" onclick="editSupplier(2)">
+                      Edit
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteSupplier(2)">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Transaksi Page -->
+        <div id="transaksi-page" class="page hidden">
+          <div class="page-header">
+            <h2>Transaksi</h2>
+            <p>Kelola transaksi penjualan obat</p>
+          </div>
+
+          <div class="search-container">
+            <input
+              type="text"
+              id="search-transaksi"
+              class="search-input"
+              placeholder="Cari transaksi..."
+            />
+            <button class="btn btn-success" onclick="showTransaksiForm()">
+              + Transaksi Baru
+            </button>
+          </div>
+
+          <div class="table-container">
+            <button
+              class="btn btn-success"
+              onclick="cetakTransaksi()"
+              style="margin-bottom: 1rem"
+            >
+              🖨️ Cetak Transaksi
+            </button>
+            <table id="tabel-cetak-transaksi">
+              <thead>
+                <tr>
+                  <th>No. Transaksi</th>
+                  <th>Pelanggan</th>
+                  <th>Obat</th>
+                  <th>Karyawan</th>
+                  <th>Tanggal</th>
+                  <th>Jumlah</th>
+                  <th>Total</th>
+                  <th>Total Bayar</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="transaksi-table">
+                <tr>
+                  <td>TRX001</td>
+                  <td>John Doe</td>
+                  <td>Paracetamol</td>
+                  <td>Ahmad Suryadi</td>
+                  <td>2024-07-18</td>
+                  <td>2</td>
+                  <td>Rp 25.000</td>
+                  <td>Rp 25.000</td>
+                  <td class="action-buttons">
+                    <button
+                      class="btn btn-warning"
+                      onclick="editTransaksi('TRX001')"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      onclick="deleteTransaksi('TRX001')"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>TRX002</td>
+                  <td>Jane Smith</td>
+                  <td>Amoxicillin</td>
+                  <td>Siti Nurhaliza</td>
+                  <td>2024-07-18</td>
+                  <td>1</td>
+                  <td>Rp 45.000</td>
+                  <td>Rp 45.000</td>
+                  <td class="action-buttons">
+                    <button
+                      class="btn btn-warning"
+                      onclick="editTransaksi('TRX002')"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      onclick="deleteTransaksi('TRX002')"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-container" style="margin-top: 2rem">
+            <h3>Riwayat Transaksi</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>No. Transaksi</th>
+                  <th>Pelanggan</th>
+                  <th>Obat</th>
+                  <th>Karyawan</th>
+                  <th>Tanggal</th>
+                  <th>Jumlah</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>TRX001</td>
+                  <td>John Doe</td>
+                  <td>Paracetamol</td>
+                  <td>Ahmad Suryadi</td>
+                  <td>2024-07-18</td>
+                  <td>2</td>
+                  <td>Rp 25.000</td>
+                  <td>Selesai</td>
+                </tr>
+                <tr>
+                  <td>TRX002</td>
+                  <td>Jane Smith</td>
+                  <td>Amoxicillin</td>
+                  <td>Siti Nurhaliza</td>
+                  <td>2024-07-18</td>
+                  <td>1</td>
+                  <td>Rp 45.000</td>
+                  <td>Selesai</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Laporan Page -->
+        <div id="laporan-page" class="page hidden">
+          <div class="page-header">
+            <h2>Laporan</h2>
+            <p>Laporan dan analisis data apotek</p>
+          </div>
+
+          <div class="search-container">
+            <input
+              type="text"
+              id="search-laporan"
+              class="search-input"
+              placeholder="Cari laporan..."
+            />
+            <button class="btn btn-success" onclick="generateLaporan()">
+              📄 Buat Laporan
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bulan</th>
+                  <th>Total Penjualan</th>
+                  <th>Total Pembelian</th>
+                  <th>Keuntungan</th>
+                </tr>
+              </thead>
+              <tbody id="laporan-table">
+                <tr>
+                  <td>Januari</td>
+                  <td>Rp 10.000.000</td>
+                  <td>Rp 7.000.000</td>
+                  <td>Rp 3.000.000</td>
+                </tr>
+                <tr>
+                  <td>Februari</td>
+                  <td>Rp 12.000.000</td>
+                  <td>Rp 8.000.000</td>
+                  <td>Rp 4.000.000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="modal-form" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 id="modal-title">Form Data</h3>
+              <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="form-data">
+              <div id="modal-body"></div>
+              <div style="text-align: right; margin-top: 1rem">
+                <button type="submit" class="btn btn-success">Simpan</button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  onclick="closeModal()"
+                >
+                  Batal
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Navigasi antar halaman
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          // Hapus semua active
+          document
+            .querySelectorAll(".nav-link")
+            .forEach((l) => l.classList.remove("active"));
+          this.classList.add("active");
+          // Sembunyikan semua page
+          document
+            .querySelectorAll(".page")
+            .forEach((page) => page.classList.add("hidden"));
+          // Tampilkan page sesuai href
+          const pageId = this.getAttribute("href").replace("#", "") + "-page";
+          const page = document.getElementById(pageId);
+          if (page) page.classList.remove("hidden");
+        });
+      });
+
+      // Navigasi dari dashboard stat-card
+      document.getElementById("stat-obat").onclick = function () {
+        document.querySelector('.nav-link[href="#obat"]').click();
+      };
+      document.getElementById("stat-karyawan").onclick = function () {
+        document.querySelector('.nav-link[href="#karyawan"]').click();
+      };
+      document.getElementById("stat-pelanggan").onclick = function () {
+        document.querySelector('.nav-link[href="#pelanggan"]').click();
+      };
+      document.getElementById("stat-supplier").onclick = function () {
+        document.querySelector('.nav-link[href="#supplier"]').click();
+      };
+      document.getElementById("stat-transaksi").onclick = function () {
+        document.querySelector('.nav-link[href="#transaksi"]').click();
+      };
+
+      // ===== DATA OBAT =====
+      let dataObat = [
+        {
+          id: 1,
+          nama: "Paracetamol",
+          jenis: "Tablet",
+          hargaBeli: 15000,
+          hargaJual: 25000,
+          stok: 150,
+        },
+        {
+          id: 2,
+          nama: "Dumin",
+          jenis: "Tablet",
+          hargaBeli: 5000,
+          hargaJual: 10000,
+          stok: 80,
+        },
+        {
+          id: 3,
+          nama: "Sanaflu",
+          jenis: "Sirup",
+          hargaBeli: 55000,
+          hargaJual: 75000,
+          stok: 30,
+        },
+        {
+          id: 4,
+          nama: "Menefamat Acid",
+          jenis: "Tablet",
+          hargaBeli: 35000,
+          hargaJual: 50000,
+          stok: 45,
+        },
+        {
+          id: 5,
+          nama: "Promag",
+          jenis: "Tablet",
+          hargaBeli: 10000,
+          hargaJual: 15000,
+          stok: 120,
+        },
+        {
+          id: 6,
+          nama: "Sangabion",
+          jenis: "Tablet",
+          hargaBeli: 45000,
+          hargaJual: 60000,
+          stok: 25,
+        },
+        {
+          id: 7,
+          nama: "Amosterra",
+          jenis: "Tablet",
+          hargaBeli: 7000,
+          hargaJual: 12000,
+          stok: 90,
+        },
+        {
+          id: 8,
+          nama: "Vitacimin",
+          jenis: "Tablet",
+          hargaBeli: 15000,
+          hargaJual: 20000,
+          stok: 110,
+        },
+        {
+          id: 9,
+          nama: "Bodrex",
+          jenis: "Tablet",
+          hargaBeli: 10000,
+          hargaJual: 15000,
+          stok: 65,
+        },
+        {
+          id: 10,
+          nama: "Paramex",
+          jenis: "Tablet",
+          hargaBeli: 6000,
+          hargaJual: 10000,
+          stok: 85,
+        },
+      ];
+
+      function toRupiah(num) {
+        return "Rp " + num.toLocaleString("id-ID");
+      }
+
+      function renderObatTable(filter = "") {
+        const tbody = document.getElementById("obat-table");
+        tbody.innerHTML = "";
+        let filtered = dataObat.filter(
+          (obat) =>
+            obat.nama.toLowerCase().includes(filter.toLowerCase()) ||
+            obat.jenis.toLowerCase().includes(filter.toLowerCase())
+        );
+        filtered.forEach((obat) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${obat.id}</td>
+            <td>${obat.nama}</td>
+            <td>${obat.jenis}</td>
+            <td>${toRupiah(obat.hargaBeli)}</td>
+            <td>${toRupiah(obat.hargaJual)}</td>
+            <td>${obat.stok}</td>
+            <td class="action-buttons">
+              <button class="btn btn-warning" onclick="editObat(${
+                obat.id
+              })">Edit</button>
+              <button class="btn btn-danger" onclick="deleteObat(${
+                obat.id
+              })">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        updateDashboardStats();
+      }
+
+      // Fungsi update jumlah dashboard sesuai data tabel
+      function updateDashboardStats() {
+        // Obat
+        const obatRows = document.querySelectorAll("#obat-table tr");
+        document.getElementById("total-obat").textContent = obatRows.length;
+
+        // Karyawan
+        const karyawanRows = document.querySelectorAll("#karyawan-table tr");
+        document.getElementById("total-karyawan").textContent =
+          karyawanRows.length;
+
+        // Pelanggan
+        const pelangganRows = document.querySelectorAll("#pelanggan-table tr");
+        document.getElementById("total-pelanggan").textContent =
+          pelangganRows.length;
+
+        // Supplier
+        const supplierRows = document.querySelectorAll("#supplier-table tr");
+        document.getElementById("total-supplier").textContent =
+          supplierRows.length;
+
+        // Transaksi Hari Ini (jumlah baris di #transaksi-table)
+        const transaksiRows = document.querySelectorAll("#transaksi-table tr");
+        document.getElementById("transaksi-hari-ini").textContent =
+          transaksiRows.length;
+      }
+
+      // Panggil saat halaman selesai dimuat
+      window.addEventListener("DOMContentLoaded", function () {
+        document
+          .querySelectorAll(".page")
+          .forEach((page) => page.classList.add("hidden"));
+        document.getElementById("dashboard-page").classList.remove("hidden");
+        renderObatTable();
+      });
+
+      // Jika ada tambah/hapus data, panggil updateDashboardStats() lagi
+
+      // Tambah/Edit Obat
+      function showObatForm(id = null) {
+        const obat = id
+          ? dataObat.find((o) => o.id === id)
+          : { nama: "", jenis: "", hargaBeli: "", hargaJual: "", stok: "" };
+        document.getElementById("modal-title").textContent = id
+          ? "Edit Obat"
+          : "Tambah Obat";
+        document.getElementById("modal-body").innerHTML = `
+          <input type="hidden" name="id" value="${id ? obat.id : ""}">
+          <div class="form-group"><label>Nama Obat</label><input name="nama" value="${
+            obat.nama || ""
+          }" required></div>
+          <div class="form-group"><label>Jenis</label><input name="jenis" value="${
+            obat.jenis || ""
+          }" required></div>
+          <div class="form-group"><label>Harga Beli</label><input name="hargaBeli" type="number" value="${
+            obat.hargaBeli || ""
+          }" required></div>
+          <div class="form-group"><label>Harga Jual</label><input name="hargaJual" type="number" value="${
+            obat.hargaJual || ""
+          }" required></div>
+          <div class="form-group"><label>Stok</label><input name="stok" type="number" value="${
+            obat.stok || ""
+          }" required></div>
+        `;
+        document.getElementById("modal-form").style.display = "block";
+        document.getElementById("form-data").onsubmit = function (e) {
+          e.preventDefault();
+          const fd = new FormData(this);
+          const obj = Object.fromEntries(fd.entries());
+          obj.hargaBeli = Number(obj.hargaBeli);
+          obj.hargaJual = Number(obj.hargaJual);
+          obj.stok = Number(obj.stok);
+          if (id) {
+            // Edit
+            const idx = dataObat.findIndex((o) => o.id == id);
+            dataObat[idx] = { id, ...obj };
+          } else {
+            // Tambah
+            obj.id = dataObat.length
+              ? Math.max(...dataObat.map((o) => o.id)) + 1
+              : 1;
+            dataObat.push(obj);
+          }
+          closeModal();
+          renderObatTable(document.getElementById("search-obat").value);
+        };
+      }
+      function editObat(id) {
+        showObatForm(id);
+      }
+      function deleteObat(id) {
+        if (confirm("Yakin hapus data?")) {
+          dataObat = dataObat.filter((o) => o.id !== id);
+          renderObatTable(document.getElementById("search-obat").value);
+        }
+      }
+      function closeModal() {
+        document.getElementById("modal-form").style.display = "none";
+      }
+
+      // Pencarian Obat
+      document
+        .getElementById("search-obat")
+        .addEventListener("input", function () {
+          renderObatTable(this.value);
+        });
+
+      // Tombol tambah obat
+      window.showObatForm = showObatForm;
+
+      // ===== DATA KARYAWAN =====
+      let dataKaryawan = [
+        { id: 1, nama: "Budi", alamat: "Padang", telepon: "09111111" },
+        { id: 2, nama: "Arsy", alamat: "Lumin", telepon: "009988" },
+        { id: 3, nama: "Syahril", alamat: "Padanglangkat", telepon: "080907" },
+        { id: 4, nama: "Ramadan", alamat: "Medan", telepon: "080806" },
+        { id: 5, nama: "Usup", alamat: "Steba", telepon: "080605" },
+        { id: 6, nama: "Badul", alamat: "Alai", telepon: "080504" },
+        { id: 7, nama: "Bowo", alamat: "Lapai", telepon: "080403" },
+        { id: 8, nama: "Sidiq", alamat: "Gunung Pangilun", telepon: "080302" },
+        { id: 9, nama: "Dicky", alamat: "Batusangkar", telepon: "080201" },
+        { id: 10, nama: "Agam", alamat: "Lubeg", telepon: "080808" },
+      ];
+
+      function renderKaryawanTable(filter = "") {
+        const tbody = document.getElementById("karyawan-table");
+        tbody.innerHTML = "";
+        let filtered = dataKaryawan.filter(
+          (k) =>
+            k.nama.toLowerCase().includes(filter.toLowerCase()) ||
+            k.alamat.toLowerCase().includes(filter.toLowerCase()) ||
+            k.telepon.includes(filter)
+        );
+        filtered.forEach((k) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${k.id}</td>
+            <td>${k.nama}</td>
+            <td>${k.alamat}</td>
+            <td>${k.telepon}</td>
+            <td class="action-buttons">
+              <button class="btn btn-warning" onclick="editKaryawan(${k.id})">Edit</button>
+              <button class="btn btn-danger" onclick="deleteKaryawan(${k.id})">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        updateDashboardStats();
+      }
+      function showKaryawanForm(id = null) {
+        const k = id
+          ? dataKaryawan.find((x) => x.id === id)
+          : { nama: "", alamat: "", telepon: "" };
+        document.getElementById("modal-title").textContent = id
+          ? "Edit Karyawan"
+          : "Tambah Karyawan";
+        document.getElementById("modal-body").innerHTML = `
+          <input type="hidden" name="id" value="${id ? k.id : ""}">
+          <div class="form-group"><label>Nama</label><input name="nama" value="${
+            k.nama || ""
+          }" required></div>
+          <div class="form-group"><label>Alamat</label><input name="alamat" value="${
+            k.alamat || ""
+          }" required></div>
+          <div class="form-group"><label>No. Telepon</label><input name="telepon" value="${
+            k.telepon || ""
+          }" required></div>
+        `;
+        document.getElementById("modal-form").style.display = "block";
+        document.getElementById("form-data").onsubmit = function (e) {
+          e.preventDefault();
+          const fd = new FormData(this);
+          const obj = Object.fromEntries(fd.entries());
+          if (id) {
+            const idx = dataKaryawan.findIndex((x) => x.id == id);
+            dataKaryawan[idx] = { id, ...obj };
+          } else {
+            obj.id = dataKaryawan.length
+              ? Math.max(...dataKaryawan.map((x) => x.id)) + 1
+              : 1;
+            dataKaryawan.push(obj);
+          }
+          closeModal();
+          renderKaryawanTable(document.getElementById("search-karyawan").value);
+        };
+      }
+      function editKaryawan(id) {
+        showKaryawanForm(id);
+      }
+      function deleteKaryawan(id) {
+        if (confirm("Yakin hapus data?")) {
+          dataKaryawan = dataKaryawan.filter((x) => x.id !== id);
+          renderKaryawanTable(document.getElementById("search-karyawan").value);
+        }
+      }
+      document
+        .getElementById("search-karyawan")
+        .addEventListener("input", function () {
+          renderKaryawanTable(this.value);
+        });
+      window.showKaryawanForm = showKaryawanForm;
+
+      // ===== DATA PELANGGAN =====
+      let dataPelanggan = [
+        {
+          id: 1,
+          nama: "Salsa",
+          alamat: "Depok",
+          jk: "Perempuan",
+          telepon: "08458839",
+          pekerjaan: "Pengusaha sukses Banget",
+        },
+        {
+          id: 2,
+          nama: "Tipa",
+          alamat: "Padang",
+          jk: "Perempuan",
+          telepon: "081266591",
+          pekerjaan: "CEO",
+        },
+        {
+          id: 3,
+          nama: "Alya",
+          alamat: "Panganak",
+          jk: "Perempuan",
+          telepon: "08976543",
+          pekerjaan: "Toko Roti",
+        },
+        {
+          id: 4,
+          nama: "Vhisa",
+          alamat: "Batam",
+          jk: "Perempuan",
+          telepon: "08976543",
+          pekerjaan: "Mahasiswa",
+        },
+        {
+          id: 5,
+          nama: "Naila",
+          alamat: "Bukittinggi",
+          jk: "Perempuan",
+          telepon: "089765434",
+          pekerjaan: "Etek Kadai",
+        },
+        {
+          id: 6,
+          nama: "Parid",
+          alamat: "Barak",
+          jk: "Laki-laki",
+          telepon: "08768976",
+          pekerjaan: "Pengangguran",
+        },
+        {
+          id: 7,
+          nama: "Tarjik",
+          alamat: "Kalawi",
+          jk: "Laki-laki",
+          telepon: "089876789",
+          pekerjaan: "Service AC",
+        },
+        {
+          id: 8,
+          nama: "Alif",
+          alamat: "Limaumanis",
+          jk: "Laki-laki",
+          telepon: "08987865",
+          pekerjaan: "Barista",
+        },
+        {
+          id: 9,
+          nama: "Ari",
+          alamat: "Tunggulhitam",
+          jk: "Laki-laki",
+          telepon: "0809070688",
+          pekerjaan: "Waiters",
+        },
+        {
+          id: 10,
+          nama: "Pikri",
+          alamat: "Payakumbuh",
+          jk: "Laki-laki",
+          telepon: "083456789",
+          pekerjaan: "Pedagang",
+        },
+      ];
+
+      function renderPelangganTable(filter = "") {
+        const tbody = document.getElementById("pelanggan-table");
+        tbody.innerHTML = "";
+        let filtered = dataPelanggan.filter(
+          (p) =>
+            p.nama.toLowerCase().includes(filter.toLowerCase()) ||
+            p.alamat.toLowerCase().includes(filter.toLowerCase()) ||
+            p.jk.toLowerCase().includes(filter.toLowerCase()) ||
+            p.telepon.includes(filter) ||
+            p.pekerjaan.toLowerCase().includes(filter.toLowerCase())
+        );
+        filtered.forEach((p) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${p.id}</td>
+            <td>${p.nama}</td>
+            <td>${p.alamat}</td>
+            <td>${p.jk}</td>
+            <td>${p.telepon}</td>
+            <td>${p.pekerjaan}</td>
+            <td class="action-buttons">
+              <button class="btn btn-warning" onclick="editPelanggan(${p.id})">Edit</button>
+              <button class="btn btn-danger" onclick="deletePelanggan(${p.id})">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        updateDashboardStats();
+      }
+      function showPelangganForm(id = null) {
+        const p = id
+          ? dataPelanggan.find((x) => x.id === id)
+          : { nama: "", alamat: "", jk: "", telepon: "", pekerjaan: "" };
+        document.getElementById("modal-title").textContent = id
+          ? "Edit Pelanggan"
+          : "Tambah Pelanggan";
+        document.getElementById("modal-body").innerHTML = `
+          <input type="hidden" name="id" value="${id ? p.id : ""}">
+          <div class="form-group"><label>Nama</label><input name="nama" value="${
+            p.nama || ""
+          }" required></div>
+          <div class="form-group"><label>Alamat</label><input name="alamat" value="${
+            p.alamat || ""
+          }" required></div>
+          <div class="form-group"><label>Jenis Kelamin</label>
+            <select name="jk" required>
+              <option value="">Pilih</option>
+              <option value="Perempuan" ${
+                p.jk === "Perempuan" ? "selected" : ""
+              }>Perempuan</option>
+              <option value="Laki-laki" ${
+                p.jk === "Laki-laki" ? "selected" : ""
+              }>Laki-laki</option>
+            </select>
+          </div>
+          <div class="form-group"><label>No. Telepon</label><input name="telepon" value="${
+            p.telepon || ""
+          }" required></div>
+          <div class="form-group"><label>Pekerjaan</label><input name="pekerjaan" value="${
+            p.pekerjaan || ""
+          }" required></div>
+        `;
+        document.getElementById("modal-form").style.display = "block";
+        document.getElementById("form-data").onsubmit = function (e) {
+          e.preventDefault();
+          const fd = new FormData(this);
+          const obj = Object.fromEntries(fd.entries());
+          if (id) {
+            const idx = dataPelanggan.findIndex((x) => x.id == id);
+            dataPelanggan[idx] = { id, ...obj };
+          } else {
+            obj.id = dataPelanggan.length
+              ? Math.max(...dataPelanggan.map((x) => x.id)) + 1
+              : 1;
+            dataPelanggan.push(obj);
+          }
+          closeModal();
+          renderPelangganTable(
+            document.getElementById("search-pelanggan").value
+          );
+        };
+      }
+      function editPelanggan(id) {
+        showPelangganForm(id);
+      }
+      function deletePelanggan(id) {
+        if (confirm("Yakin hapus data?")) {
+          dataPelanggan = dataPelanggan.filter((x) => x.id !== id);
+          renderPelangganTable(
+            document.getElementById("search-pelanggan").value
+          );
+        }
+      }
+      document
+        .getElementById("search-pelanggan")
+        .addEventListener("input", function () {
+          renderPelangganTable(this.value);
+        });
+      window.showPelangganForm = showPelangganForm;
+
+      // ===== DATA SUPPLIER =====
+      let dataSupplier = [
+        { id: 1, nama: "Karim", alamat: "Batanganai", telepon: "1567890123" },
+        { id: 2, nama: "Nul", alamat: "Sisawah", telepon: "156789012" },
+        { id: 3, nama: "Syah", alamat: "Tabekpatah", telepon: "1456789091" },
+        { id: 4, nama: "Farhan", alamat: "Kotoalam", telepon: "1345678901" },
+        { id: 5, nama: "Asyura", alamat: "Gunuang", telepon: "134567890" },
+        { id: 6, nama: "Rahmat", alamat: "Koto", telepon: "123456789" },
+        { id: 7, nama: "Alpin", alamat: "Sijunjung", telepon: "07687448" },
+        { id: 8, nama: "Ikhwan", alamat: "Sungaitarab", telepon: "1678901234" },
+        { id: 9, nama: "Al", alamat: "Sungayang", telepon: "1789012345" },
+        {
+          id: 10,
+          nama: "Fhareza",
+          alamat: "Salimpauang",
+          telepon: "1234567890",
+        },
+      ];
+
+      function renderSupplierTable(filter = "") {
+        const tbody = document.getElementById("supplier-table");
+        tbody.innerHTML = "";
+        let filtered = dataSupplier.filter(
+          (s) =>
+            s.nama.toLowerCase().includes(filter.toLowerCase()) ||
+            s.alamat.toLowerCase().includes(filter.toLowerCase()) ||
+            s.telepon.includes(filter)
+        );
+        filtered.forEach((s) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${s.id}</td>
+            <td>${s.nama}</td>
+            <td>${s.alamat}</td>
+            <td>${s.telepon}</td>
+            <td class="action-buttons">
+              <button class="btn btn-warning" onclick="editSupplier(${s.id})">Edit</button>
+              <button class="btn btn-danger" onclick="deleteSupplier(${s.id})">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        updateDashboardStats();
+      }
+      function showSupplierForm(id = null) {
+        const s = id
+          ? dataSupplier.find((x) => x.id === id)
+          : { nama: "", alamat: "", telepon: "" };
+        document.getElementById("modal-title").textContent = id
+          ? "Edit Supplier"
+          : "Tambah Supplier";
+        document.getElementById("modal-body").innerHTML = `
+          <input type="hidden" name="id" value="${id ? s.id : ""}">
+          <div class="form-group"><label>Nama Supplier</label><input name="nama" value="${
+            s.nama || ""
+          }" required></div>
+          <div class="form-group"><label>Alamat</label><input name="alamat" value="${
+            s.alamat || ""
+          }" required></div>
+          <div class="form-group"><label>No. Telepon</label><input name="telepon" value="${
+            s.telepon || ""
+          }" required></div>
+        `;
+        document.getElementById("modal-form").style.display = "block";
+        document.getElementById("form-data").onsubmit = function (e) {
+          e.preventDefault();
+          const fd = new FormData(this);
+          const obj = Object.fromEntries(fd.entries());
+          if (id) {
+            const idx = dataSupplier.findIndex((x) => x.id == id);
+            dataSupplier[idx] = { id, ...obj };
+          } else {
+            obj.id = dataSupplier.length
+              ? Math.max(...dataSupplier.map((x) => x.id)) + 1
+              : 1;
+            dataSupplier.push(obj);
+          }
+          closeModal();
+          renderSupplierTable(document.getElementById("search-supplier").value);
+        };
+      }
+      function editSupplier(id) {
+        showSupplierForm(id);
+      }
+      function deleteSupplier(id) {
+        if (confirm("Yakin hapus data?")) {
+          dataSupplier = dataSupplier.filter((x) => x.id !== id);
+          renderSupplierTable(document.getElementById("search-supplier").value);
+        }
+      }
+      document
+        .getElementById("search-supplier")
+        .addEventListener("input", function () {
+          renderSupplierTable(this.value);
+        });
+      window.showSupplierForm = showSupplierForm;
+
+      // ===== DATA TRANSAKSI =====
+      let dataTransaksi = [
+        {
+          id: "TRX001",
+          pelanggan: "Salsa",
+          obat: "Paracetamol",
+          karyawan: "Budi",
+          tanggal: "2024-07-18",
+          jumlah: 2,
+          total: 25000,
+          totalBayar: 25000,
+          status: "Selesai",
+        },
+        {
+          id: "TRX002",
+          pelanggan: "Tipa",
+          obat: "Dumin",
+          karyawan: "Arsy",
+          tanggal: "2024-07-18",
+          jumlah: 1,
+          total: 10000,
+          totalBayar: 10000,
+          status: "Selesai",
+        },
+        {
+          id: "TRX003",
+          pelanggan: "Alya",
+          obat: "Sanaflu",
+          karyawan: "Syahril",
+          tanggal: "2024-07-18",
+          jumlah: 1,
+          total: 75000,
+          totalBayar: 75000,
+          status: "Selesai",
+        },
+        {
+          id: "TRX004",
+          pelanggan: "Vhisa",
+          obat: "Promag",
+          karyawan: "Ramadan",
+          tanggal: "2024-07-18",
+          jumlah: 3,
+          total: 45000,
+          totalBayar: 45000,
+          status: "Selesai",
+        },
+        {
+          id: "TRX005",
+          pelanggan: "Naila",
+          obat: "Sangabion",
+          karyawan: "Usup",
+          tanggal: "2024-07-18",
+          jumlah: 1,
+          total: 60000,
+          totalBayar: 60000,
+          status: "Selesai",
+        },
+      ];
+
+      function renderRiwayatTransaksi() {
+        // Ambil tbody pada tabel riwayat transaksi (yang kedua di halaman transaksi)
+        const tbody = document.querySelector(
+          "#transaksi-page .table-container + .table-container tbody"
+        );
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        dataTransaksi.forEach((t) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${t.id}</td>
+            <td>${t.pelanggan}</td>
+            <td>${t.obat}</td>
+            <td>${t.karyawan}</td>
+            <td>${t.tanggal}</td>
+            <td>${t.jumlah}</td>
+            <td>${toRupiah(t.total)}</td>
+            <td>${t.status}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function renderTransaksiTable(filter = "") {
+        const tbody = document.getElementById("transaksi-table");
+        tbody.innerHTML = "";
+        let filtered = dataTransaksi.filter(
+          (t) =>
+            t.id.toLowerCase().includes(filter.toLowerCase()) ||
+            t.pelanggan.toLowerCase().includes(filter.toLowerCase()) ||
+            t.obat.toLowerCase().includes(filter.toLowerCase()) ||
+            t.karyawan.toLowerCase().includes(filter.toLowerCase()) ||
+            t.tanggal.includes(filter)
+        );
+        filtered.forEach((t) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${t.id}</td>
+            <td>${t.pelanggan}</td>
+            <td>${t.obat}</td>
+            <td>${t.karyawan}</td>
+            <td>${t.tanggal}</td>
+            <td>${t.jumlah}</td>
+            <td>${toRupiah(t.total)}</td>
+            <td>${toRupiah(t.totalBayar)}</td>
+            <td class="action-buttons">
+              <button class="btn btn-warning" onclick="editTransaksi('${
+                t.id
+              }')">Edit</button>
+              <button class="btn btn-danger" onclick="deleteTransaksi('${
+                t.id
+              }')">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        updateDashboardStats();
+        renderRiwayatTransaksi();
+        renderRecentTransactions(); // <-- update dashboard setiap kali transaksi berubah
+      }
+
+      // Tambahkan fungsi ini untuk render Transaksi Terbaru di dashboard
+      function renderRecentTransactions() {
+        const tbody = document.getElementById("recent-transactions");
+        tbody.innerHTML = "";
+        // Ambil 5 transaksi terbaru (atau kurang jika data sedikit)
+        let recent = [...dataTransaksi]
+          .sort((a, b) => b.id.localeCompare(a.id)) // urutkan dari id terbesar (terbaru)
+          .slice(0, 5);
+        recent.forEach((t) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${t.id}</td>
+            <td>${t.pelanggan}</td>
+            <td>${t.obat}</td>
+            <td>${t.tanggal}</td>
+            <td>${toRupiah(t.total)}</td>
+            <td><span class="btn btn-success">${t.status}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Panggil fungsi ini setelah data transaksi di-render
+      window.addEventListener("DOMContentLoaded", function () {
+        renderObatTable();
+        renderKaryawanTable();
+        renderPelangganTable();
+        renderSupplierTable();
+        renderTransaksiTable();
+        renderRiwayatTransaksi();
+        renderRecentTransactions();
+      });
+
+      // Fungsi cetak transaksi
+      function cetakTransaksi() {
+        window.print();
+      }
+    </script>
+  </body>
+</html>
